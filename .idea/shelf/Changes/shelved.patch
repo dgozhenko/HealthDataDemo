@@ -1,0 +1,88 @@
+Index: app/src/main/java/com/dhozhenkohealthdatademo/MainActivity.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.dhozhenkohealthdatademo\n\nimport android.os.Bundle\nimport androidx.activity.ComponentActivity\nimport androidx.activity.compose.setContent\nimport androidx.compose.foundation.layout.fillMaxSize\nimport androidx.compose.material3.MaterialTheme\nimport androidx.compose.material3.Surface\nimport androidx.compose.material3.Text\nimport androidx.compose.runtime.Composable\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.tooling.preview.Preview\nimport com.dhozhenkohealthdatademo.ui.theme.HealthDataDemoTheme\n\nclass MainActivity : ComponentActivity() {\n    override fun onCreate(savedInstanceState: Bundle?) {\n        super.onCreate(savedInstanceState)\n        setContent {\n            HealthDataDemoTheme {\n                // A surface container using the 'background' color from the theme\n                Surface(\n                    modifier = Modifier.fillMaxSize(),\n                    color = MaterialTheme.colorScheme.background\n                ) {\n                    Greeting(\"Android\")\n                }\n            }\n        }\n    }\n}\n\n@Composable\nfun Greeting(name: String, modifier: Modifier = Modifier) {\n    Text(\n        text = \"Hello $name!\",\n        modifier = modifier\n    )\n}\n\n@Preview(showBackground = true)\n@Composable\nfun GreetingPreview() {\n    HealthDataDemoTheme {\n        Greeting(\"Android\")\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/dhozhenkohealthdatademo/MainActivity.kt b/app/src/main/java/com/dhozhenkohealthdatademo/MainActivity.kt
+--- a/app/src/main/java/com/dhozhenkohealthdatademo/MainActivity.kt	(revision 485b606e8028c5f837a1371d08b781aaa8833b75)
++++ b/app/src/main/java/com/dhozhenkohealthdatademo/MainActivity.kt	(date 1702043794428)
+@@ -1,46 +1,59 @@
+ package com.dhozhenkohealthdatademo
+ 
++import android.content.Intent
+ import android.os.Bundle
++import android.util.Log
+ import androidx.activity.ComponentActivity
+ import androidx.activity.compose.setContent
++import androidx.compose.foundation.layout.Column
+ import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.foundation.layout.padding
++import androidx.compose.material3.ElevatedButton
+ import androidx.compose.material3.MaterialTheme
++import androidx.compose.material3.Scaffold
+ import androidx.compose.material3.Surface
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.LaunchedEffect
++import androidx.compose.runtime.getValue
+ import androidx.compose.ui.Modifier
++import androidx.compose.ui.platform.LocalContext
+ import androidx.compose.ui.tooling.preview.Preview
++import androidx.health.connect.client.HealthConnectClient
++import androidx.health.connect.client.records.StepsRecord
++import androidx.health.connect.client.request.ReadRecordsRequest
++import androidx.health.connect.client.time.TimeRangeFilter
+ import com.dhozhenkohealthdatademo.ui.theme.HealthDataDemoTheme
++import java.time.Instant
++import java.time.ZonedDateTime
++import java.time.temporal.ChronoField
++import java.time.temporal.ChronoUnit
+ 
++const val HEALTH_CONNECT_SETTINGS_ACTION = "androidx.health.ACTION_HEALTH_CONNECT_SETTINGS"
+ class MainActivity : ComponentActivity() {
+     override fun onCreate(savedInstanceState: Bundle?) {
+         super.onCreate(savedInstanceState)
++
++        val healthConnectManager = (application as BaseApplication).healthConnectManager
++
+         setContent {
+             HealthDataDemoTheme {
+                 // A surface container using the 'background' color from the theme
++
++                LaunchedEffect(key1 = true ) {
++                    val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
++                    healthConnectManager.readStepsByTimeRange(
++                        startTime = startOfDay.toInstant().minus(7, ChronoUnit.DAYS),
++                        endTime = Instant.now()
++                    )
++                }
+                 Surface(
+                     modifier = Modifier.fillMaxSize(),
+                     color = MaterialTheme.colorScheme.background
+                 ) {
+-                    Greeting("Android")
++
+                 }
+             }
+         }
+     }
+-}
+-
+-@Composable
+-fun Greeting(name: String, modifier: Modifier = Modifier) {
+-    Text(
+-        text = "Hello $name!",
+-        modifier = modifier
+-    )
+-}
+-
+-@Preview(showBackground = true)
+-@Composable
+-fun GreetingPreview() {
+-    HealthDataDemoTheme {
+-        Greeting("Android")
+-    }
+ }
+\ No newline at end of file

@@ -6,41 +6,62 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.dhozhenkohealthdatademo.domain.navigation.NavigationRoute
+import com.dhozhenkohealthdatademo.presentation.WelcomeScreen
 import com.dhozhenkohealthdatademo.ui.theme.HealthDataDemoTheme
+import java.time.Instant
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
+
+const val HEALTH_CONNECT_SETTINGS_ACTION = "androidx.health.ACTION_HEALTH_CONNECT_SETTINGS"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val healthConnectManager = (application as BaseApplication).healthConnectManager
+
         setContent {
             HealthDataDemoTheme {
                 // A surface container using the 'background' color from the theme
+
+                var isPermissionGranted by remember {
+                    mutableStateOf(false)
+                }
+                var startRouting by remember {
+                    mutableStateOf(NavigationRoute.WelcomeScreenNavigationRoute.name)
+                }
+
+                LaunchedEffect(key1 = true,  ) {
+                    isPermissionGranted = healthConnectManager.hasAllPermissions()
+                    if (isPermissionGranted) {
+                        startRouting = NavigationRoute.HealthDataScreenNavigationRoute.name
+                    }
+                }
+
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = startRouting) {
+                        composable(route = NavigationRoute.WelcomeScreenNavigationRoute.name) {
+                            WelcomeScreen(
+                                navController = navController, healthConnectManager = healthConnectManager
+                            )
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    HealthDataDemoTheme {
-        Greeting("Android")
     }
 }

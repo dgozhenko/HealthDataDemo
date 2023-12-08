@@ -69,4 +69,7 @@ dependencies {
 
     // Health Connect SDK
     implementation("androidx.health.connect:connect-client:1.1.0-alpha02")
+
+    // Compose navigation
+    implementation("androidx.navigation:navigation-compose:2.4.0")
 }
