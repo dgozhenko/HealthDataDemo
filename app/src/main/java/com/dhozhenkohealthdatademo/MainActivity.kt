@@ -17,13 +17,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dhozhenkohealthdatademo.domain.navigation.NavigationRoute
 import com.dhozhenkohealthdatademo.presentation.WelcomeScreen
+import com.dhozhenkohealthdatademo.presentation.healthdata.HealthDataScreen
 import com.dhozhenkohealthdatademo.ui.theme.HealthDataDemoTheme
+import dagger.hilt.android.AndroidEntryPoint
 import java.time.Instant
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 
 const val HEALTH_CONNECT_SETTINGS_ACTION = "androidx.health.ACTION_HEALTH_CONNECT_SETTINGS"
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,9 @@ class MainActivity : ComponentActivity() {
                             WelcomeScreen(
                                 navController = navController, healthConnectManager = healthConnectManager
                             )
+                        }
+                        composable(route = NavigationRoute.HealthDataScreenNavigationRoute.name) {
+                            HealthDataScreen(navController = navController, healthConnectManager = healthConnectManager)
                         }
                     }
                 }
