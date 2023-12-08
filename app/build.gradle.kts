@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.dhozhenkohealthdatademo"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -66,4 +66,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Health Connect SDK
+    implementation("androidx.health.connect:connect-client:1.1.0-alpha02")
 }
