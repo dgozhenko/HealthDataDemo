@@ -19,8 +19,10 @@ import androidx.health.connect.client.time.TimeRangeFilter
 import com.dhozhenkohealthdatademo.data.util.UseCaseResult
 import com.dhozhenkohealthdatademo.domain.model.Calories
 import com.dhozhenkohealthdatademo.domain.model.DistanceData
+import com.dhozhenkohealthdatademo.domain.model.Sleep
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -173,6 +175,55 @@ class HealthConnectManager(private val context: Context) {
             emit(UseCaseResult.Error(e.toString()))
         }
     }
+
+    fun readSleepRecordByTimeRange(
+        startTime: Instant, endTime: Instant
+    ): Flow<UseCaseResult<List<Sleep>>> = flow {
+        try {
+            val response = healthConnectClient.readRecords(
+                ReadRecordsRequest(
+                    SleepSessionRecord::class,
+                    timeRangeFilter = TimeRangeFilter.between(startTime, endTime)
+                )
+            )
+
+            val formatterRecords = getFormattedSleepRecords(sleepRecords = response.records)
+
+            // Process combined step counts by day
+            for ((date, hours) in formatterRecords) {
+                Log.d("SLEEP", "Date: $date - Total Calories: $hours")
+            }
+            emit(UseCaseResult.Success(formatterRecords.map { entry ->
+                Sleep(hours = entry.value, date = entry.key)
+            }))
+        } catch (e: Exception) {
+            Log.d("SLEEP", e.toString())
+            emit(UseCaseResult.Error(e.toString()))
+        }
+    }
+
+    fun getFormattedSleepRecords(sleepRecords: List<SleepSessionRecord>): Map<LocalDate, String> {
+        val formattedSleepRecords = mutableMapOf<LocalDate, String>()
+
+        // Iterate through each sleep session record
+        for (sessionRecord in sleepRecords) {
+            val sessionDate = sessionRecord.startTime.atZone(ZoneId.systemDefault()).toLocalDate()
+            val sessionEndTime = sessionRecord.endTime
+            val sessionDuration = Duration.between(sessionRecord.startTime, sessionEndTime)
+
+            // Format duration as "XhrYm" (e.g., "6hr20m")
+            val hours = sessionDuration.toHours()
+            val minutes = sessionDuration.minusHours(hours).toMinutes()
+
+            val formattedDuration = "$hours hr $minutes m"
+
+            // Map the session date to its formatted duration
+            formattedSleepRecords[sessionDate] = formattedDuration
+        }
+
+        return formattedSleepRecords
+    }
+
 
 
     fun checkAvailability() {

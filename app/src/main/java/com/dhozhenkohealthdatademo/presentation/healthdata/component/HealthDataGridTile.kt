@@ -24,7 +24,7 @@ import com.dhozhenkohealthdatademo.util.formatDoubleToString
 @Composable
 fun HealthDataGridTile(
     title: String,
-    value: Double?,
+    value: String?,
     units: String?,
     loading: Boolean,
     @DrawableRes icon: Int,
@@ -45,7 +45,7 @@ fun HealthDataGridTile(
             Text(text = title, style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold))
             if (value != null) {
                 Row {
-                    Text(text = formatDoubleToString(value), style = TextStyle(fontSize = 16.sp))
+                    Text(text = value, style = TextStyle(fontSize = 16.sp))
                     Text(text = " $units" ?: "")
                 }
             }

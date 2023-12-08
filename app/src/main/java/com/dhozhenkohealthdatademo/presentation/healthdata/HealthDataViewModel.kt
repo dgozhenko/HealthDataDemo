@@ -29,7 +29,8 @@ class HealthDataViewModel @Inject constructor(private val healthConnectManager: 
                 loading = false, steps = listOf()
             ),
             distanceData = DistanceData(loading = false, distances = listOf()),
-            caloriesData = HealthDataState.CaloriesData(loading = false, calories = listOf())
+            caloriesData = HealthDataState.CaloriesData(loading = false, calories = listOf()),
+            sleepData = HealthDataState.SleepData(loading = false, sleepDatas = listOf())
         )
     )
     val healthDataState = _healthDataState.asStateFlow()
@@ -38,6 +39,30 @@ class HealthDataViewModel @Inject constructor(private val healthConnectManager: 
         getStepsHealthData()
         getDistanceHealthData()
         getCaloriesHealthData()
+        getSleepHealthData()
+    }
+
+    private fun getSleepHealthData() {
+        val startOfDay = ZonedDateTime.now().truncatedTo(ChronoUnit.DAYS)
+        val today = Instant.now()
+        val weekAgo = startOfDay.toInstant().minus(7, ChronoUnit.DAYS)
+        healthConnectManager.readSleepRecordByTimeRange(
+            startTime = weekAgo, endTime = today
+        ).onStart {
+            _healthDataState.update { state ->
+                state.copy(sleepData = state.sleepData.copy(loading = true))
+            }
+        }.onSuccess { sleep ->
+            _healthDataState.update { state ->
+                state.copy(
+                    sleepData = state.sleepData.copy(
+                        loading = false, sleepDatas = sleep
+                    )
+                )
+            }
+        }.onError {
+            Log.d("SLEEP", it)
+        }.launchIn(viewModelScope)
     }
 
     private fun getCaloriesHealthData() {
