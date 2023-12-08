@@ -13,11 +13,6 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.dhozhenkohealthdatademo.HEALTH_CONNECT_SETTINGS_ACTION
 import com.dhozhenkohealthdatademo.R
-import com.dhozhenkohealthdatademo.data.HealthConnectManager
+import com.dhozhenkohealthdatademo.data.manager.HealthConnectManager
 
 @Composable
 fun WelcomeScreen(

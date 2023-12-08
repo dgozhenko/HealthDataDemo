@@ -1,4 +1,4 @@
-package com.dhozhenkohealthdatademo.data
+package com.dhozhenkohealthdatademo.data.manager
 
 import android.content.Context
 import android.os.Build
@@ -13,9 +13,11 @@ import androidx.health.connect.client.records.HeartRateRecord
 import androidx.health.connect.client.records.SleepSessionRecord
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
-import androidx.health.connect.client.records.WeightRecord
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
+import com.dhozhenkohealthdatademo.data.util.UseCaseResult
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -46,43 +48,47 @@ class HealthConnectManager(private val context: Context) {
         checkAvailability()
     }
 
-    suspend fun readStepsByTimeRange(
+    fun readStepsByTimeRange(
         startTime: Instant,
         endTime: Instant
-    ) {
-        try {
-            val response =
-                healthConnectClient.readRecords(
-                    ReadRecordsRequest(
-                        StepsRecord::class,
-                        timeRangeFilter = TimeRangeFilter.between(startTime, endTime)
+    ): Flow<UseCaseResult<MutableMap<LocalDate, Int>>> =
+        flow {
+            try {
+                val response =
+                    healthConnectClient.readRecords(
+                        ReadRecordsRequest(
+                            StepsRecord::class,
+                            timeRangeFilter = TimeRangeFilter.between(startTime, endTime)
+                        )
                     )
-                )
 
-            // Create a map to store steps by day
-            val stepsByDay = mutableMapOf<LocalDate, Int>()
+                // Create a map to store steps by day
+                val stepsByDay = mutableMapOf<LocalDate, Int>()
 
-            for (stepRecord in response.records) {
-                val startDate = stepRecord.startTime.atZone(ZoneId.systemDefault()).toLocalDate()
-                val endDate = stepRecord.endTime.atZone(ZoneId.systemDefault()).toLocalDate()
+                for (stepRecord in response.records) {
+                    val startDate = stepRecord.startTime.atZone(ZoneId.systemDefault()).toLocalDate()
+                    val endDate = stepRecord.endTime.atZone(ZoneId.systemDefault()).toLocalDate()
 
-                // Loop through each day in the range of the step record
-                var currentDate = startDate
-                while (!currentDate.isAfter(endDate)) {
-                    // Aggregate steps for each day within the range
-                    stepsByDay[currentDate] = (stepsByDay.getOrDefault(currentDate, 0) + stepRecord.count).toInt()
-                    currentDate = currentDate.plusDays(1) // Move to the next day
+                    // Loop through each day in the range of the step record
+                    var currentDate = startDate
+                    while (!currentDate.isAfter(endDate)) {
+                        // Aggregate steps for each day within the range
+                        stepsByDay[currentDate] = (stepsByDay.getOrDefault(currentDate, 0) + stepRecord.count).toInt()
+                        currentDate = currentDate.plusDays(1) // Move to the next day
+                    }
                 }
-            }
 
-            // Process combined step counts by day
-            for ((date, totalSteps) in stepsByDay) {
-                Log.d("STEPS", "Date: $date - Total Steps: $totalSteps")
+                // Process combined step counts by day
+                for ((date, totalSteps) in stepsByDay) {
+                    Log.d("STEPS", "Date: $date - Total Steps: $totalSteps")
+                }
+                emit(UseCaseResult.Success(stepsByDay))
+            } catch (e: Exception) {
+                Log.d("STEPS", e.toString())
+                emit(UseCaseResult.Error(e.toString()))
             }
-        } catch (e: Exception) {
-            Log.d("STEPS", e.toString())
         }
-    }
+
 
 
     fun checkAvailability() {
