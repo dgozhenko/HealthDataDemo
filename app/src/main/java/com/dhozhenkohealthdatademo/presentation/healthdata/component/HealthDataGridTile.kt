@@ -18,12 +18,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dhozhenkohealthdatademo.util.formatDoubleToString
 
 @ExperimentalMaterial3Api
 @Composable
 fun HealthDataGridTile(
     title: String,
-    value: Int?,
+    value: Double?,
     units: String?,
     loading: Boolean,
     @DrawableRes icon: Int,
@@ -44,8 +45,8 @@ fun HealthDataGridTile(
             Text(text = title, style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold))
             if (value != null) {
                 Row {
-                    Text(text = "$value ", style = TextStyle(fontSize = 16.sp))
-                    Text(text = units ?: "")
+                    Text(text = formatDoubleToString(value), style = TextStyle(fontSize = 16.sp))
+                    Text(text = " $units" ?: "")
                 }
             }
         }

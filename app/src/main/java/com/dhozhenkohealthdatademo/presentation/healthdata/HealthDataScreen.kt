@@ -42,7 +42,7 @@ fun HealthDataScreen(
                 val lastData = state.stepsData.steps.maxByOrNull { it.date }
                 HealthDataGridTile(
                     title = "My Steps",
-                    value = lastData?.count,
+                    value = lastData?.count?.toDouble(),
                     units = "",
                     icon = R.drawable.step_icon,
                     loading = state.stepsData.loading
@@ -52,17 +52,27 @@ fun HealthDataScreen(
                 val lastData = state.distanceData.distances.maxByOrNull { it.date }
                 HealthDataGridTile(
                     title = "Distance",
-                    value = lastData?.value?.toInt(),
-                    units = if (lastData?.value != null) "m" else "",
+                    value = lastData?.value,
+                    units = if (lastData?.value != null) "km" else "",
                     icon = R.drawable.ruler_icon,
                     loading = state.distanceData.loading
                 )
             }
             item {
+                val lastData = state.caloriesData.calories.maxByOrNull { it.date }
+                HealthDataGridTile(
+                    title = "Calories",
+                    value = lastData?.value,
+                    units = if (lastData?.value != null) "kcal" else "",
+                    icon = R.drawable.fire_icon,
+                    loading = state.caloriesData.loading
+                )
+            }
+            item {
                 val lastData = state.stepsData.steps.maxByOrNull { it.date }
                 HealthDataGridTile(
                     title = "My Steps",
-                    value = lastData?.count,
+                    value = lastData?.count?.toDouble(),
                     units = "",
                     icon = R.drawable.step_icon,
                     loading = state.stepsData.loading
@@ -72,7 +82,7 @@ fun HealthDataScreen(
                 val lastData = state.stepsData.steps.maxByOrNull { it.date }
                 HealthDataGridTile(
                     title = "My Steps",
-                    value = lastData?.count,
+                    value = lastData?.count?.toDouble(),
                     units = "",
                     icon = R.drawable.step_icon,
                     loading = state.stepsData.loading
@@ -82,17 +92,7 @@ fun HealthDataScreen(
                 val lastData = state.stepsData.steps.maxByOrNull { it.date }
                 HealthDataGridTile(
                     title = "My Steps",
-                    value = lastData?.count,
-                    units = "",
-                    icon = R.drawable.step_icon,
-                    loading = state.stepsData.loading
-                )
-            }
-            item {
-                val lastData = state.stepsData.steps.maxByOrNull { it.date }
-                HealthDataGridTile(
-                    title = "My Steps",
-                    value = lastData?.count,
+                    value = lastData?.count?.toDouble(),
                     units = "",
                     icon = R.drawable.step_icon,
                     loading = state.stepsData.loading
