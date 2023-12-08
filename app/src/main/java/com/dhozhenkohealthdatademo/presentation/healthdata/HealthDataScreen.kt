@@ -49,13 +49,13 @@ fun HealthDataScreen(
                 )
             }
             item {
-                val lastData = state.stepsData.steps.maxByOrNull { it.date }
+                val lastData = state.distanceData.distances.maxByOrNull { it.date }
                 HealthDataGridTile(
-                    title = "My Steps",
-                    value = lastData?.count,
-                    units = "",
-                    icon = R.drawable.step_icon,
-                    loading = state.stepsData.loading
+                    title = "Distance",
+                    value = lastData?.value?.toInt(),
+                    units = if (lastData?.value != null) "m" else "",
+                    icon = R.drawable.ruler_icon,
+                    loading = state.distanceData.loading
                 )
             }
             item {

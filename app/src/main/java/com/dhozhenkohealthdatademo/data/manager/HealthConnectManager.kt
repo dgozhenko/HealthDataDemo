@@ -16,6 +16,7 @@ import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import com.dhozhenkohealthdatademo.data.util.UseCaseResult
+import com.dhozhenkohealthdatademo.domain.model.DistanceData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.time.Instant
@@ -85,6 +86,49 @@ class HealthConnectManager(private val context: Context) {
                 emit(UseCaseResult.Success(stepsByDay))
             } catch (e: Exception) {
                 Log.d("STEPS", e.toString())
+                emit(UseCaseResult.Error(e.toString()))
+            }
+        }
+
+    fun readDistanceByTimeRange(
+        startTime: Instant,
+        endTime: Instant
+    ): Flow<UseCaseResult<List<DistanceData.Distance>>> =
+        flow {
+            try {
+                val response =
+                    healthConnectClient.readRecords(
+                        ReadRecordsRequest(
+                            DistanceRecord::class,
+                            timeRangeFilter = TimeRangeFilter.between(startTime, endTime)
+                        )
+                    )
+
+                // Create a map to store steps by day
+                val distancesByDay = mutableMapOf<LocalDate, Double>()
+
+                for (distanceRecord in response.records) {
+                    val startDate = distanceRecord.startTime.atZone(ZoneId.systemDefault()).toLocalDate()
+                    val endDate = distanceRecord.endTime.atZone(ZoneId.systemDefault()).toLocalDate()
+
+                    // Loop through each day in the range of the step record
+                    var currentDate = startDate
+                    while (!currentDate.isAfter(endDate)) {
+                        // Aggregate steps for each day within the range
+                        distancesByDay[currentDate] = (distancesByDay.getOrDefault(currentDate, 0f).toDouble() + distanceRecord.distance.inMeters)
+                        currentDate = currentDate.plusDays(1) // Move to the next day
+                    }
+                }
+
+                // Process combined step counts by day
+                for ((date, totalSteps) in distancesByDay) {
+                    Log.d("DISTANCE", "Date: $date - Total Distance: $distancesByDay")
+                }
+                emit(UseCaseResult.Success(distancesByDay.map { entry ->
+                    DistanceData.Distance(value = entry.value, date = entry.key)
+                }))
+            } catch (e: Exception) {
+                Log.d("DISTANCE", e.toString())
                 emit(UseCaseResult.Error(e.toString()))
             }
         }
