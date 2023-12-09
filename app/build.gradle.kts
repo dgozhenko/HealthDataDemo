@@ -1,6 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -9,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.dhozhenkohealthdatademo"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -66,4 +69,29 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    // Health Connect SDK
+    implementation("androidx.health.connect:connect-client:1.1.0-alpha02")
+
+    // Compose navigation
+    implementation("androidx.navigation:navigation-compose:2.7.5")
+
+    // Hilt
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("com.google.dagger:hilt-android:2.46")
+    kapt("com.google.dagger:hilt-android-compiler:2.46")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
+
+    // Extended Icons
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+
+    // Splash Screen Api
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // GSON
+    implementation("com.google.code.gson:gson:2.9.0")
+
+    // Chart Library
+    implementation("com.github.tehras:charts:0.2.4-alpha")
+
 }
