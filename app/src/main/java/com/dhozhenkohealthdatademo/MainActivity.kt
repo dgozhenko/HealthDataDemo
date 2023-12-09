@@ -17,10 +17,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.dhozhenkohealthdatademo.domain.enum.HealthDataType
 import com.dhozhenkohealthdatademo.domain.model.HealthData
 import com.dhozhenkohealthdatademo.domain.navigation.NavigationRoute
 import com.dhozhenkohealthdatademo.presentation.healthdata.HealthDataScreen
-import com.dhozhenkohealthdatademo.presentation.healthdetail.HealthDataType
 import com.dhozhenkohealthdatademo.presentation.healthdetail.HealthDetailScreen
 import com.dhozhenkohealthdatademo.presentation.welcome.WelcomeScreen
 import com.dhozhenkohealthdatademo.ui.theme.HealthDataDemoTheme
@@ -47,8 +47,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             HealthDataDemoTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
                     val state by viewModel.mainScreenState.collectAsState()

@@ -12,22 +12,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.dhozhenkohealthdatademo.domain.enum.HealthDataType
 import com.dhozhenkohealthdatademo.domain.model.HealthDataObject
+import com.dhozhenkohealthdatademo.presentation.healthdetail.component.HealthAverageView
 
-enum class HealthDataType {
-    STEPS, CALORIES, DISTANCE, SLEEP;
-
-    fun getTitle(): String {
-        return when (this) {
-            STEPS -> "My steps"
-            CALORIES -> "Total Calories Burned"
-            DISTANCE -> "Distance"
-            SLEEP -> "My sleep"
-        }
-    }
-}
 
 @ExperimentalMaterial3Api
 @Composable
@@ -42,10 +34,13 @@ fun HealthDetailScreen(
         })
     }) {
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
+                .padding(horizontal = 24.dp)
         ) {
+            HealthAverageView(data = data, type = type)
             Text(text = data.toString())
         }
     }

@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dhozhenkohealthdatademo.R
+import com.dhozhenkohealthdatademo.domain.enum.HealthDataType
 import com.dhozhenkohealthdatademo.domain.model.HealthData
 import com.dhozhenkohealthdatademo.domain.model.HealthDataObject
 import com.dhozhenkohealthdatademo.domain.navigation.NavigationRoute
 import com.dhozhenkohealthdatademo.presentation.healthdata.component.HealthDataRow
-import com.dhozhenkohealthdatademo.presentation.healthdetail.HealthDataType
 import com.dhozhenkohealthdatademo.util.formatDoubleToString
 import com.dhozhenkohealthdatademo.util.formatLocalDate
 import com.google.gson.Gson
@@ -76,9 +76,11 @@ fun HealthDataScreen(
                             )
                         )
                     )
-                    navController.navigate(NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
-                        dataNavigationArgumentJson
-                    }")
+                    navController.navigate(
+                        NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
+                            dataNavigationArgumentJson
+                        }"
+                    )
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -106,9 +108,11 @@ fun HealthDataScreen(
                             )
                         )
                     )
-                    navController.navigate(NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
-                        dataNavigationArgumentJson
-                    }")
+                    navController.navigate(
+                        NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
+                            dataNavigationArgumentJson
+                        }"
+                    )
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -136,9 +140,11 @@ fun HealthDataScreen(
                             )
                         )
                     )
-                    navController.navigate(NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
-                        dataNavigationArgumentJson
-                    }")
+                    navController.navigate(
+                        NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
+                            dataNavigationArgumentJson
+                        }"
+                    )
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -166,9 +172,11 @@ fun HealthDataScreen(
                             )
                         )
                     )
-                    navController.navigate(NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
-                        dataNavigationArgumentJson
-                    }")
+                    navController.navigate(
+                        NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
+                            dataNavigationArgumentJson
+                        }"
+                    )
                 }
             )
         }

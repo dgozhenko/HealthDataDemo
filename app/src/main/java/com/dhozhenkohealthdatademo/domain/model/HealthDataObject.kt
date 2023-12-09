@@ -3,7 +3,7 @@ package com.dhozhenkohealthdatademo.domain.model
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.navigation.NavType
-import com.dhozhenkohealthdatademo.presentation.healthdetail.HealthDataType
+import com.dhozhenkohealthdatademo.domain.enum.HealthDataType
 import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
 
@@ -13,7 +13,7 @@ data class HealthDataObject(
     val date: String,
     val stringValue: String
 ) : Parcelable {
-    companion object  NavigationType: NavType<HealthDataObject>(isNullableAllowed = false) {
+    companion object NavigationType : NavType<HealthDataObject>(isNullableAllowed = false) {
         override fun get(bundle: Bundle, key: String): HealthDataObject? {
             return bundle.getParcelable(key)
         }
@@ -33,7 +33,7 @@ data class HealthData(
     val type: HealthDataType,
     val data: List<HealthDataObject>
 ) : Parcelable {
-    companion object  NavigationType: NavType<HealthData>(isNullableAllowed = false) {
+    companion object NavigationType : NavType<HealthData>(isNullableAllowed = false) {
         override fun get(bundle: Bundle, key: String): HealthData? {
             return bundle.getParcelable(key)
         }
