@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -49,15 +47,21 @@ fun HealthDataRow(
             IconWithProgressIndicator(icon = icon, title = title, isLoading = loading)
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(text = title, style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold))
+                Text(
+                    text = title,
+                    style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                )
                 if (value != null) {
                     Row {
                         Text(text = value, style = TextStyle(fontSize = 16.sp))
-                        Text(text = " $units" ?: "")
+                        Text(text = " $units")
                     }
                 }
                 if (date.isNotEmpty()) {
-                    Text(text = "Last updated - $date", style = TextStyle(fontSize = 13.sp, fontWeight = FontWeight.Light))
+                    Text(
+                        text = "Last updated - $date",
+                        style = TextStyle(fontSize = 13.sp, fontWeight = FontWeight.Light)
+                    )
                 }
             }
             Spacer(modifier = Modifier.weight(1f))

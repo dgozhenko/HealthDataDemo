@@ -13,12 +13,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,8 +24,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Lifecycle.Event.*
+import androidx.lifecycle.Lifecycle.Event.ON_ANY
+import androidx.lifecycle.Lifecycle.Event.ON_CREATE
+import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
+import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
+import androidx.lifecycle.Lifecycle.Event.ON_RESUME
+import androidx.lifecycle.Lifecycle.Event.ON_START
+import androidx.lifecycle.Lifecycle.Event.ON_STOP
 import androidx.navigation.NavController
 import com.dhozhenkohealthdatademo.HEALTH_CONNECT_SETTINGS_ACTION
 import com.dhozhenkohealthdatademo.R
@@ -46,7 +46,7 @@ fun WelcomeScreen(
 
     val activity = LocalContext.current
     val scope = rememberCoroutineScope()
-    
+
     OnLifecycleEvent { _, event ->
         when (event) {
             ON_CREATE -> Unit
@@ -59,6 +59,7 @@ fun WelcomeScreen(
                     }
                 }
             }
+
             ON_PAUSE -> Unit
             ON_STOP -> Unit
             ON_DESTROY -> Unit

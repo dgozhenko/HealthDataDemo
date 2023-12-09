@@ -8,20 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dhozhenkohealthdatademo.domain.navigation.NavigationRoute
-import com.dhozhenkohealthdatademo.presentation.welcome.WelcomeScreen
 import com.dhozhenkohealthdatademo.presentation.healthdata.HealthDataScreen
+import com.dhozhenkohealthdatademo.presentation.welcome.WelcomeScreen
 import com.dhozhenkohealthdatademo.ui.theme.HealthDataDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,10 +47,14 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     val state by viewModel.mainScreenState.collectAsState()
-                    NavHost(navController = navController, startDestination = state.startNavigationRoute?.name ?: "") {
+                    NavHost(
+                        navController = navController,
+                        startDestination = state.startNavigationRoute?.name ?: ""
+                    ) {
                         composable(route = NavigationRoute.WelcomeScreenNavigationRoute.name) {
                             WelcomeScreen(
-                                navController = navController, healthConnectManager = healthConnectManager
+                                navController = navController,
+                                healthConnectManager = healthConnectManager
                             )
                         }
                         composable(route = NavigationRoute.HealthDataScreenNavigationRoute.name) {

@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -19,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dhozhenkohealthdatademo.R
-import com.dhozhenkohealthdatademo.data.manager.HealthConnectManager
 import com.dhozhenkohealthdatademo.presentation.healthdata.component.HealthDataRow
 import com.dhozhenkohealthdatademo.util.formatDoubleToString
 import com.dhozhenkohealthdatademo.util.formatLocalDate
@@ -35,7 +32,7 @@ fun HealthDataScreen(
 
     Scaffold(
         topBar = {
-                 CenterAlignedTopAppBar(title = { Text(text = "Health & Activity Insights") })
+            CenterAlignedTopAppBar(title = { Text(text = "Health & Activity Insights") })
         },
         modifier = Modifier.fillMaxSize()
     ) { scaffoldPadding ->
@@ -62,7 +59,7 @@ fun HealthDataScreen(
 
             HealthDataRow(
                 title = "Distance",
-                value = if (lastDistanceData?.value != null) formatDoubleToString(lastDistanceData.value.toDouble()) else null,
+                value = if (lastDistanceData?.value != null) formatDoubleToString(lastDistanceData.value) else null,
                 units = if (lastDistanceData?.value != null) "km" else "",
                 icon = R.drawable.ruler_icon,
                 loading = state.distanceData.loading,
@@ -72,7 +69,7 @@ fun HealthDataScreen(
 
             HealthDataRow(
                 title = "Calories",
-                value = if (lastCaloriesData?.value != null) formatDoubleToString(lastCaloriesData.value.toDouble()) else null,
+                value = if (lastCaloriesData?.value != null) formatDoubleToString(lastCaloriesData.value) else null,
                 units = if (lastCaloriesData?.value != null) "kcal" else "",
                 icon = R.drawable.fire_icon,
                 loading = state.caloriesData.loading,
