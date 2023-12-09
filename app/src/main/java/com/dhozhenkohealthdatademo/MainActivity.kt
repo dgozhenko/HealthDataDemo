@@ -3,16 +3,19 @@ package com.dhozhenkohealthdatademo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,35 +30,28 @@ const val HEALTH_CONNECT_SETTINGS_ACTION = "androidx.health.ACTION_HEALTH_CONNEC
 @ExperimentalMaterial3Api
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel by viewModels<MainViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val healthConnectManager = (application as BaseApplication).healthConnectManager
 
+        installSplashScreen().apply {
+            this.setKeepOnScreenCondition {
+                viewModel.mainScreenState.value.startNavigationRoute == null
+            }
+        }
+
         setContent {
             HealthDataDemoTheme {
-                // A surface container using the 'background' color from the theme
-
-                var isPermissionGranted by remember {
-                    mutableStateOf(false)
-                }
-                var startRouting by remember {
-                    mutableStateOf(NavigationRoute.WelcomeScreenNavigationRoute.name)
-                }
-
-                LaunchedEffect(key1 = true,  ) {
-                    isPermissionGranted = healthConnectManager.hasAllPermissions()
-                    if (isPermissionGranted) {
-                        startRouting = NavigationRoute.HealthDataScreenNavigationRoute.name
-                    }
-                }
-
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = startRouting) {
+                    val state by viewModel.mainScreenState.collectAsState()
+                    NavHost(navController = navController, startDestination = state.startNavigationRoute?.name ?: "") {
                         composable(route = NavigationRoute.WelcomeScreenNavigationRoute.name) {
                             WelcomeScreen(
                                 navController = navController, healthConnectManager = healthConnectManager

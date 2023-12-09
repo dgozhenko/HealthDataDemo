@@ -20,7 +20,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dhozhenkohealthdatademo.R
 import com.dhozhenkohealthdatademo.data.manager.HealthConnectManager
-import com.dhozhenkohealthdatademo.presentation.healthdata.component.HealthDataGridTile
 import com.dhozhenkohealthdatademo.presentation.healthdata.component.HealthDataRow
 import com.dhozhenkohealthdatademo.util.formatDoubleToString
 import com.dhozhenkohealthdatademo.util.formatLocalDate
