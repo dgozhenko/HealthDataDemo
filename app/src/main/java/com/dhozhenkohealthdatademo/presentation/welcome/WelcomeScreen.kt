@@ -1,4 +1,4 @@
-package com.dhozhenkohealthdatademo.presentation
+package com.dhozhenkohealthdatademo.presentation.welcome
 
 import android.content.Intent
 import androidx.compose.foundation.Image
@@ -13,11 +13,7 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,10 +24,20 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle.Event.ON_ANY
+import androidx.lifecycle.Lifecycle.Event.ON_CREATE
+import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
+import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
+import androidx.lifecycle.Lifecycle.Event.ON_RESUME
+import androidx.lifecycle.Lifecycle.Event.ON_START
+import androidx.lifecycle.Lifecycle.Event.ON_STOP
 import androidx.navigation.NavController
 import com.dhozhenkohealthdatademo.HEALTH_CONNECT_SETTINGS_ACTION
 import com.dhozhenkohealthdatademo.R
-import com.dhozhenkohealthdatademo.data.HealthConnectManager
+import com.dhozhenkohealthdatademo.data.manager.HealthConnectManager
+import com.dhozhenkohealthdatademo.domain.navigation.NavigationRoute
+import com.dhozhenkohealthdatademo.util.OnLifecycleEvent
+import kotlinx.coroutines.launch
 
 @Composable
 fun WelcomeScreen(
@@ -39,6 +45,27 @@ fun WelcomeScreen(
 ) {
 
     val activity = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    OnLifecycleEvent { _, event ->
+        when (event) {
+            ON_CREATE -> Unit
+            ON_START -> Unit
+            ON_RESUME -> {
+                scope.launch {
+                    val isPermissionGranted = healthConnectManager.hasAllPermissions()
+                    if (isPermissionGranted) {
+                        navController.navigate(NavigationRoute.HealthDataScreenNavigationRoute.name)
+                    }
+                }
+            }
+
+            ON_PAUSE -> Unit
+            ON_STOP -> Unit
+            ON_DESTROY -> Unit
+            ON_ANY -> Unit
+        }
+    }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { scaffoldPadding ->
         Column(
