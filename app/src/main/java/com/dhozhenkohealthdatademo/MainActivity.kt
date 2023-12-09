@@ -1,5 +1,6 @@
 package com.dhozhenkohealthdatademo
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,8 +16,12 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.dhozhenkohealthdatademo.domain.enum.HealthDataType
+import com.dhozhenkohealthdatademo.domain.model.HealthData
 import com.dhozhenkohealthdatademo.domain.navigation.NavigationRoute
 import com.dhozhenkohealthdatademo.presentation.healthdata.HealthDataScreen
+import com.dhozhenkohealthdatademo.presentation.healthdetail.HealthDetailScreen
 import com.dhozhenkohealthdatademo.presentation.welcome.WelcomeScreen
 import com.dhozhenkohealthdatademo.ui.theme.HealthDataDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,8 +47,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             HealthDataDemoTheme {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
                     val state by viewModel.mainScreenState.collectAsState()
@@ -59,6 +63,28 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(route = NavigationRoute.HealthDataScreenNavigationRoute.name) {
                             HealthDataScreen(navController = navController)
+                        }
+                        composable(
+                            route = NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data={data}",
+                            arguments = listOf(
+                                navArgument(name = "data") {
+                                    type = HealthData.NavigationType
+                                },
+                            )
+                        ) {
+                            val healthData =
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                    it.arguments?.getParcelable(
+                                        "data", HealthData::class.java
+                                    )
+                                } else {
+                                    it.arguments?.getParcelable<HealthData>("data")
+                                }
+                            HealthDetailScreen(
+                                navController = navController,
+                                type = healthData?.type ?: HealthDataType.CALORIES,
+                                data = healthData?.data ?: listOf()
+                            )
                         }
                     }
                 }

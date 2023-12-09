@@ -194,7 +194,7 @@ class HealthConnectManager(private val context: Context) {
                 Log.d("SLEEP", "Date: $date - Total Calories: $hours")
             }
             emit(UseCaseResult.Success(formatterRecords.map { entry ->
-                Sleep(hours = entry.value, date = entry.key)
+                Sleep(hours = entry.value.first, date = entry.key, timeInHours = entry.value.second.toDouble())
             }))
         } catch (e: Exception) {
             Log.d("SLEEP", e.toString())
@@ -202,8 +202,8 @@ class HealthConnectManager(private val context: Context) {
         }
     }
 
-    fun getFormattedSleepRecords(sleepRecords: List<SleepSessionRecord>): Map<LocalDate, String> {
-        val formattedSleepRecords = mutableMapOf<LocalDate, String>()
+    fun getFormattedSleepRecords(sleepRecords: List<SleepSessionRecord>): Map<LocalDate, Pair<String, Long>> {
+        val formattedSleepRecords = mutableMapOf<LocalDate, Pair<String, Long>>()
 
         // Iterate through each sleep session record
         for (sessionRecord in sleepRecords) {
@@ -218,7 +218,7 @@ class HealthConnectManager(private val context: Context) {
             val formattedDuration = "$hours hr $minutes m"
 
             // Map the session date to its formatted duration
-            formattedSleepRecords[sessionDate] = formattedDuration
+            formattedSleepRecords[sessionDate] = Pair(first = formattedDuration, second = hours)
         }
 
         return formattedSleepRecords

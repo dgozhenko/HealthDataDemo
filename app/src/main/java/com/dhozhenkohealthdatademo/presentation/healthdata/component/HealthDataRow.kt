@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dhozhenkohealthdatademo.ui.theme.MainColor
 
 @ExperimentalMaterial3Api
 @Composable
@@ -34,8 +36,13 @@ fun HealthDataRow(
     loading: Boolean,
     date: String,
     @DrawableRes icon: Int,
+    onClick: () -> Unit,
 ) {
-    Card(onClick = { }, modifier = Modifier.fillMaxWidth()) {
+    Card(
+        onClick = { onClick() }, colors = CardDefaults.cardColors(
+            containerColor = MainColor
+        ), modifier = Modifier.fillMaxWidth()
+    ) {
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
@@ -48,8 +55,7 @@ fun HealthDataRow(
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
-                    text = title,
-                    style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    text = title, style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 )
                 if (value != null) {
                     Row {

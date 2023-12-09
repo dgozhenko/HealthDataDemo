@@ -23,6 +23,7 @@ data class HealthDataState(
 
     data class SleepData(
         val loading: Boolean,
-        val sleepDatas: List<Sleep>
+        val sleepDatas: List<Sleep>,
+
     )
 }
