@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import com.dhozhenkohealthdatademo.domain.enum.HealthDataType
 import com.dhozhenkohealthdatademo.domain.model.HealthDataObject
 import com.dhozhenkohealthdatademo.presentation.healthdetail.component.HealthAverageView
+import com.dhozhenkohealthdatademo.ui.theme.MainColor
 import com.github.tehras.charts.bar.BarChart
 import com.github.tehras.charts.bar.BarChartData
 import com.github.tehras.charts.bar.renderer.label.LabelDrawer
@@ -52,7 +53,7 @@ fun HealthDetailScreen(
             HealthAverageView(data = data, type = type)
             BarChart(barChartData = BarChartData(bars = data.map {
                 val dayOfWeek = LocalDate.parse(it.date).dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
-                BarChartData.Bar(value = it.dataValue.toFloat(), color = Color.Blue, label = dayOfWeek)
+                BarChartData.Bar(value = it.dataValue.toFloat(), color = MainColor, label = dayOfWeek)
             }), modifier = Modifier.height(400.dp), labelDrawer = SimpleValueDrawer(drawLocation = SimpleValueDrawer.DrawLocation.Outside))
         }
     }
