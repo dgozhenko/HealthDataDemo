@@ -4,5 +4,6 @@ import java.time.LocalDate
 
 data class Sleep(
     val hours: String,
-    val date: LocalDate
+    val date: LocalDate,
+    val timeInHours: Double
 )

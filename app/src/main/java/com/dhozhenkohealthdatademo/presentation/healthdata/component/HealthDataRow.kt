@@ -34,8 +34,9 @@ fun HealthDataRow(
     loading: Boolean,
     date: String,
     @DrawableRes icon: Int,
+    onClick: () -> Unit,
 ) {
-    Card(onClick = { }, modifier = Modifier.fillMaxWidth()) {
+    Card(onClick = { onClick() }, modifier = Modifier.fillMaxWidth()) {
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,

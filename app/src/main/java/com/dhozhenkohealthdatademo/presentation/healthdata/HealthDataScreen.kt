@@ -1,5 +1,6 @@
 package com.dhozhenkohealthdatademo.presentation.healthdata
 
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,9 +18,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.dhozhenkohealthdatademo.R
+import com.dhozhenkohealthdatademo.domain.model.HealthData
+import com.dhozhenkohealthdatademo.domain.model.HealthDataObject
+import com.dhozhenkohealthdatademo.domain.navigation.NavigationRoute
 import com.dhozhenkohealthdatademo.presentation.healthdata.component.HealthDataRow
+import com.dhozhenkohealthdatademo.presentation.healthdetail.HealthDataType
 import com.dhozhenkohealthdatademo.util.formatDoubleToString
 import com.dhozhenkohealthdatademo.util.formatLocalDate
+import com.google.gson.Gson
 
 @ExperimentalMaterial3Api
 @Composable
@@ -53,7 +59,27 @@ fun HealthDataScreen(
                 units = "",
                 icon = R.drawable.step_icon,
                 loading = state.stepsData.loading,
-                date = if (lastStepsData?.date != null) formatLocalDate(lastStepsData.date) else ""
+                date = if (lastStepsData?.date != null) formatLocalDate(lastStepsData.date) else "",
+                onClick = {
+                    val convertedData = state.stepsData.steps.map {
+                        HealthDataObject(
+                            dataValue = it.count.toDouble(),
+                            date = it.date,
+                            stringValue = ""
+                        )
+                    }
+                    val dataNavigationArgumentJson = Uri.encode(
+                        Gson().toJson(
+                            HealthData(
+                                type = HealthDataType.STEPS,
+                                data = convertedData
+                            )
+                        )
+                    )
+                    navController.navigate(NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
+                        dataNavigationArgumentJson
+                    }")
+                }
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -63,7 +89,16 @@ fun HealthDataScreen(
                 units = if (lastDistanceData?.value != null) "km" else "",
                 icon = R.drawable.ruler_icon,
                 loading = state.distanceData.loading,
-                date = if (lastDistanceData?.date != null) formatLocalDate(lastDistanceData.date) else ""
+                date = if (lastDistanceData?.date != null) formatLocalDate(lastDistanceData.date) else "",
+                onClick = {
+                    val convertedData = state.distanceData.distances.map {
+                        HealthDataObject(
+                            dataValue = it.value,
+                            date = it.date,
+                            stringValue = ""
+                        )
+                    }
+                }
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -73,7 +108,16 @@ fun HealthDataScreen(
                 units = if (lastCaloriesData?.value != null) "kcal" else "",
                 icon = R.drawable.fire_icon,
                 loading = state.caloriesData.loading,
-                date = if (lastCaloriesData?.date != null) formatLocalDate(lastCaloriesData.date) else ""
+                date = if (lastCaloriesData?.date != null) formatLocalDate(lastCaloriesData.date) else "",
+                onClick = {
+                    val convertedData = state.caloriesData.calories.map {
+                        HealthDataObject(
+                            dataValue = it.value,
+                            date = it.date,
+                            stringValue = ""
+                        )
+                    }
+                }
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -82,8 +126,17 @@ fun HealthDataScreen(
                 value = lastSleepData?.hours,
                 units = "",
                 icon = R.drawable.sleep_icon,
-                loading = state.stepsData.loading,
-                date = if (lastSleepData?.date != null) formatLocalDate(lastSleepData.date) else ""
+                loading = state.sleepData.loading,
+                date = if (lastSleepData?.date != null) formatLocalDate(lastSleepData.date) else "",
+                onClick = {
+                    val convertedData = state.sleepData.sleepDatas.map {
+                        HealthDataObject(
+                            dataValue = it.timeInHours,
+                            date = it.date,
+                            stringValue = it.hours
+                        )
+                    }
+                }
             )
         }
     }

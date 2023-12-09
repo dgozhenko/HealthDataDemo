@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -86,5 +87,8 @@ dependencies {
 
     // Splash Screen Api
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // GSON
+    implementation("com.google.code.gson:gson:2.9.0")
 
 }
