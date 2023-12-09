@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(route = NavigationRoute.HealthDataScreenNavigationRoute.name) {
-                            HealthDataScreen(navController = navController, healthConnectManager = healthConnectManager)
+                            HealthDataScreen(navController = navController)
                         }
                     }
                 }

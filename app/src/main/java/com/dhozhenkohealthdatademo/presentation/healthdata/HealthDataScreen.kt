@@ -28,7 +28,6 @@ import com.dhozhenkohealthdatademo.util.formatLocalDate
 @Composable
 fun HealthDataScreen(
     navController: NavController,
-    healthConnectManager: HealthConnectManager,
     viewModel: HealthDataViewModel = hiltViewModel()
 ) {
 
