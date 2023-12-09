@@ -91,4 +91,7 @@ dependencies {
     // GSON
     implementation("com.google.code.gson:gson:2.9.0")
 
+    // Chart Library
+    implementation("com.github.tehras:charts:0.2.4-alpha")
+
 }
