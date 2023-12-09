@@ -17,13 +17,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dhozhenkohealthdatademo.domain.navigation.NavigationRoute
-import com.dhozhenkohealthdatademo.presentation.WelcomeScreen
+import com.dhozhenkohealthdatademo.presentation.welcome.WelcomeScreen
 import com.dhozhenkohealthdatademo.presentation.healthdata.HealthDataScreen
 import com.dhozhenkohealthdatademo.ui.theme.HealthDataDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.Instant
-import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
 
 const val HEALTH_CONNECT_SETTINGS_ACTION = "androidx.health.ACTION_HEALTH_CONNECT_SETTINGS"
 
