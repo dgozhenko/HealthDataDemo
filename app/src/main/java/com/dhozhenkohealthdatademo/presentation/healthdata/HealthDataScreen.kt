@@ -64,7 +64,7 @@ fun HealthDataScreen(
                     val convertedData = state.stepsData.steps.map {
                         HealthDataObject(
                             dataValue = it.count.toDouble(),
-                            date = it.date,
+                            date = it.date.toString(),
                             stringValue = ""
                         )
                     }
@@ -94,10 +94,21 @@ fun HealthDataScreen(
                     val convertedData = state.distanceData.distances.map {
                         HealthDataObject(
                             dataValue = it.value,
-                            date = it.date,
+                            date = it.date.toString(),
                             stringValue = ""
                         )
                     }
+                    val dataNavigationArgumentJson = Uri.encode(
+                        Gson().toJson(
+                            HealthData(
+                                type = HealthDataType.DISTANCE,
+                                data = convertedData
+                            )
+                        )
+                    )
+                    navController.navigate(NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
+                        dataNavigationArgumentJson
+                    }")
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -113,10 +124,21 @@ fun HealthDataScreen(
                     val convertedData = state.caloriesData.calories.map {
                         HealthDataObject(
                             dataValue = it.value,
-                            date = it.date,
+                            date = it.date.toString(),
                             stringValue = ""
                         )
                     }
+                    val dataNavigationArgumentJson = Uri.encode(
+                        Gson().toJson(
+                            HealthData(
+                                type = HealthDataType.CALORIES,
+                                data = convertedData
+                            )
+                        )
+                    )
+                    navController.navigate(NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
+                        dataNavigationArgumentJson
+                    }")
                 }
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -132,10 +154,21 @@ fun HealthDataScreen(
                     val convertedData = state.sleepData.sleepDatas.map {
                         HealthDataObject(
                             dataValue = it.timeInHours,
-                            date = it.date,
+                            date = it.date.toString(),
                             stringValue = it.hours
                         )
                     }
+                    val dataNavigationArgumentJson = Uri.encode(
+                        Gson().toJson(
+                            HealthData(
+                                type = HealthDataType.SLEEP,
+                                data = convertedData
+                            )
+                        )
+                    )
+                    navController.navigate(NavigationRoute.HealthDetailScreenNavigationRoute.name + "?data=${
+                        dataNavigationArgumentJson
+                    }")
                 }
             )
         }

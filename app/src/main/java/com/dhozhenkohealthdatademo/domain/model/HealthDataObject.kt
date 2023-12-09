@@ -6,12 +6,11 @@ import androidx.navigation.NavType
 import com.dhozhenkohealthdatademo.presentation.healthdetail.HealthDataType
 import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
 
 @Parcelize
 data class HealthDataObject(
     val dataValue: Double,
-    val date: LocalDate,
+    val date: String,
     val stringValue: String
 ) : Parcelable {
     companion object  NavigationType: NavType<HealthDataObject>(isNullableAllowed = false) {
