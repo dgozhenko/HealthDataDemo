@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
@@ -23,12 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.dhozhenkohealthdatademo.util.formatDoubleToString
 
 @ExperimentalMaterial3Api
 @Composable
@@ -37,6 +34,7 @@ fun HealthDataRow(
     value: String?,
     units: String?,
     loading: Boolean,
+    date: String,
     @DrawableRes icon: Int,
 ) {
     Card(onClick = { }, modifier = Modifier.fillMaxWidth()) {
@@ -58,6 +56,9 @@ fun HealthDataRow(
                         Text(text = " $units" ?: "")
                     }
                 }
+                if (date.isNotEmpty()) {
+                    Text(text = "Last updated - $date", style = TextStyle(fontSize = 13.sp, fontWeight = FontWeight.Light))
+                }
             }
             Spacer(modifier = Modifier.weight(1f))
             Icon(
@@ -68,39 +69,6 @@ fun HealthDataRow(
                     .padding(8.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
-        }
-    }
-}
-
-@ExperimentalMaterial3Api
-@Composable
-fun HealthDataGridTile(
-    title: String,
-    value: String?,
-    units: String?,
-    loading: Boolean,
-    @DrawableRes icon: Int,
-) {
-    Card(onClick = { }, modifier = Modifier
-        .padding(4.dp)
-        .wrapContentSize()) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top,
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(vertical = 8.dp, horizontal = 12.dp)
-        ) {
-            IconWithProgressIndicator(icon = icon, title = title, isLoading = loading)
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(text = title, style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold))
-            if (value != null) {
-                Row {
-                    Text(text = value, style = TextStyle(fontSize = 16.sp))
-                    Text(text = " $units" ?: "")
-                }
-            }
         }
     }
 }

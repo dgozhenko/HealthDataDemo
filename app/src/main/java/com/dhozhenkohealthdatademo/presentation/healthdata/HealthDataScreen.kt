@@ -23,6 +23,7 @@ import com.dhozhenkohealthdatademo.data.manager.HealthConnectManager
 import com.dhozhenkohealthdatademo.presentation.healthdata.component.HealthDataGridTile
 import com.dhozhenkohealthdatademo.presentation.healthdata.component.HealthDataRow
 import com.dhozhenkohealthdatademo.util.formatDoubleToString
+import com.dhozhenkohealthdatademo.util.formatLocalDate
 
 @ExperimentalMaterial3Api
 @Composable
@@ -56,7 +57,8 @@ fun HealthDataScreen(
                 value = if (lastStepsData?.count != null) formatDoubleToString(lastStepsData.count.toDouble()) else null,
                 units = "",
                 icon = R.drawable.step_icon,
-                loading = state.stepsData.loading
+                loading = state.stepsData.loading,
+                date = if (lastStepsData?.date != null) formatLocalDate(lastStepsData.date) else ""
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -65,7 +67,8 @@ fun HealthDataScreen(
                 value = if (lastDistanceData?.value != null) formatDoubleToString(lastDistanceData.value.toDouble()) else null,
                 units = if (lastDistanceData?.value != null) "km" else "",
                 icon = R.drawable.ruler_icon,
-                loading = state.distanceData.loading
+                loading = state.distanceData.loading,
+                date = if (lastDistanceData?.date != null) formatLocalDate(lastDistanceData.date) else ""
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -74,7 +77,8 @@ fun HealthDataScreen(
                 value = if (lastCaloriesData?.value != null) formatDoubleToString(lastCaloriesData.value.toDouble()) else null,
                 units = if (lastCaloriesData?.value != null) "kcal" else "",
                 icon = R.drawable.fire_icon,
-                loading = state.caloriesData.loading
+                loading = state.caloriesData.loading,
+                date = if (lastCaloriesData?.date != null) formatLocalDate(lastCaloriesData.date) else ""
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -83,7 +87,8 @@ fun HealthDataScreen(
                 value = lastSleepData?.hours,
                 units = "",
                 icon = R.drawable.sleep_icon,
-                loading = state.stepsData.loading
+                loading = state.stepsData.loading,
+                date = if (lastSleepData?.date != null) formatLocalDate(lastSleepData.date) else ""
             )
         }
     }
